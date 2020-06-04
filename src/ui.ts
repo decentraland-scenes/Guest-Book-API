@@ -56,6 +56,20 @@ background.sourceHeight = 921
 background.visible = false
 background.isPointerBlocker = false
 
+export const headerText = new UIText(background)
+headerText.value = 'I was also blown away by the crater!'
+headerText.name = 'header'
+headerText.width = '650px'
+headerText.height = '800px'
+headerText.hAlign = 'center'
+headerText.vAlign = 'center'
+headerText.positionY = 230
+headerText.positionX = 0
+headerText.fontSize = 25
+headerText.vTextAlign = 'center'
+headerText.hTextAlign = 'center'
+headerText.color = Color4.Black()
+
 export const signaturesUI = new UIText(background)
 signaturesUI.value = 'Signatures go here'
 signaturesUI.name = 'signatures'
