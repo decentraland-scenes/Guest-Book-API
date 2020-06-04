@@ -52,7 +52,7 @@ export function buildBuilderScene() {
   engine.addEntity(signpost)
   signpost.setParent(_scene)
   const transform4 = new Transform({
-    position: new Vector3(9.855362892150879, 0, 11),
+    position: new Vector3(11, 0, 11),
     rotation: new Quaternion(0, 0, 0, 1),
     scale: new Vector3(1, 1, 1),
   })
@@ -415,19 +415,17 @@ export function buildBuilderScene() {
 
   const channelId = Math.random().toString(16).slice(2)
   const channelBus = new MessageBus()
-  const inventory = createInventory(UICanvas, UIContainerStack, UIImage)
-  const options = { inventory }
 
   const script1 = new Script1()
   const script2 = new Script2()
   const script3 = new Script3()
   const script4 = new Script4()
   const script5 = new Script5()
-  script1.init(options)
-  script2.init(options)
-  script3.init(options)
-  script4.init(options)
-  script5.init(options)
+  script1.init()
+  script2.init()
+  script3.init()
+  script4.init()
+  script5.init()
   script1.spawn(
     signpost,
     { text: 'The amazing crater', fontSize: 20 },

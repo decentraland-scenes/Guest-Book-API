@@ -1,4 +1,4 @@
-import { buildBuilderScene } from './builderScene'
+import { buildBuilderScene } from './builderContent'
 import { openUI } from './ui'
 
 buildBuilderScene()
@@ -6,8 +6,8 @@ buildBuilderScene()
 let guestBook = new Entity()
 guestBook.addComponent(
   new Transform({
-    position: new Vector3(8, 0, 4),
-    rotation: Quaternion.Euler(0, 60, 0),
+    position: new Vector3(8, 0, 10),
+    rotation: Quaternion.Euler(0, 300, 0),
   })
 )
 guestBook.addComponent(new GLTFShape('models/guestbook.glb'))
@@ -25,8 +25,8 @@ engine.addEntity(guestBook)
 let guestBookBase = new Entity()
 guestBookBase.addComponent(
   new Transform({
-    position: new Vector3(8, 0, 4),
-    rotation: Quaternion.Euler(0, 60, 0),
+    position: new Vector3(8, 0, 10),
+    rotation: Quaternion.Euler(0, 300, 0),
   })
 )
 guestBookBase.addComponent(new GLTFShape('models/guestbook_base.glb'))

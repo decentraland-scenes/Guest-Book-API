@@ -10,6 +10,10 @@ const scaleMultiplier = 0.7
 
 export let guestBookPage = 1
 
+var linesPerGuestBookPage = 5
+
+let allSignatures = []
+
 export async function openUI() {
   UIOpenTime = +Date.now()
   background.visible = true
@@ -22,7 +26,8 @@ export async function openUI() {
   NextButton.isPointerBlocker = true
   LastButton.isPointerBlocker = true
   guestBookPage = 1
-  getGuestBook()
+  allSignatures = await getGuestBook()
+  displaySignatures()
 }
 
 export function closeUI() {
@@ -127,6 +132,35 @@ LastButton.onClick = new OnClick(() => {
   }
   getGuestBook()
 })
+
+// arrange all signatures into pages
+function displaySignatures() {
+  let signaturePage = 0
+  let signatureList = ['']
+  for (let i = 0; i < allSignatures.length; i++) {
+    signatureList[signaturePage] = signatureList[signaturePage].concat(
+      allSignatures[i].name
+    )
+    signatureList[signaturePage] = signatureList[signaturePage].concat(' - ')
+    let lines = signatureList[signaturePage].split('\n')
+    if (lines[lines.length - 1].length > 25) {
+      signatureList[signaturePage] = signatureList[signaturePage].concat('\n')
+    }
+
+    if (lines.length >= linesPerGuestBookPage) {
+      signaturePage += 1
+      signatureList.push('')
+      //guestBookPage
+    }
+  }
+  signaturesUI.value = signatureList[guestBookPage - 1]
+  log(
+    'signature to show from page ',
+    guestBookPage,
+    ' :',
+    signatureList[guestBookPage - 1]
+  )
+}
 
 // Instance the input object
 const input = Input.instance
