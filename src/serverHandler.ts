@@ -9,12 +9,12 @@ const userData = executeTask(async () => {
 
 // external servers being used by the project - Please change these to your own if working on something else!
 export let fireBaseServer =
-  'https://us-central1-dcl-door-test.cloudfunctions.net/app/'
+  'https://us-central1-dcl-guestbook.cloudfunctions.net/app/'
 
 // get latest scoreboard data from server
 export async function getGuestBook() {
   try {
-    let url = fireBaseServer + 'get-scores'
+    let url = fireBaseServer + 'get-signatures'
     let response = await fetch(url)
     let json = await response.json()
     log(json)
@@ -30,10 +30,10 @@ export async function signGuestBook() {
     await userData
   }
   try {
-    let url = fireBaseServer + 'publish-scores'
+    let url = fireBaseServer + 'add-signature'
     let body = JSON.stringify({
-      name: (await userData).displayName,
       id: (await userData).userId,
+      name: (await userData).displayName,
     })
     log(body)
     let response = await fetch(url, {
