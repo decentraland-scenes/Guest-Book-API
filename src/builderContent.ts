@@ -428,7 +428,7 @@ export function buildBuilderScene() {
   script5.init()
   script1.spawn(
     signpost,
-    { text: 'The amazing crater', fontSize: 20 },
+    { text: 'The extraordinary crater\n(NOT a tourist trap)', fontSize: 19 },
     createChannel(channelId, signpost, channelBus)
   )
   script2.spawn(
@@ -447,14 +447,15 @@ export function buildBuilderScene() {
   script2.spawn(
     signpostRoot2,
     {
-      text: 'Take a selfie,\nShare it with your friends\nTell them to come',
+      text:
+        'Take a selfie,\nShare it with your friends,\nyour family, pets\nTell them all to come!',
       fontSize: 20,
     },
     createChannel(channelId, signpostRoot2, channelBus)
   )
   script1.spawn(
     signpost2,
-    { text: 'The amazing crater', fontSize: 20 },
+    { text: 'The extraordinary crater\n(NOT a tourist trap)', fontSize: 19 },
     createChannel(channelId, signpost2, channelBus)
   )
   script4.spawn(
