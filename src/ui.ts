@@ -71,7 +71,7 @@ headerText.hTextAlign = 'center'
 headerText.color = Color4.Black()
 
 export const signaturesUI = new UIText(background)
-signaturesUI.value = 'Signatures go here'
+signaturesUI.value = 'Fetching signatures'
 signaturesUI.name = 'signatures'
 signaturesUI.width = '650px'
 signaturesUI.height = '800px'
