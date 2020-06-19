@@ -40,12 +40,13 @@ app.get('/get-signatures', async (req: any, res: any) => {
 
 app.post('/add-signature', async (req: any, res: any) => {
   let newSignature = req.body
-
   try {
-    await signatures.doc('/' + Math.floor(Math.random() * 1000) + '/').create({
-      id: newSignature.id,
-      name: newSignature.name,
-    })
+    await signatures
+      .doc('/' + Math.floor(Math.random() * 100000) + '/')
+      .create({
+        id: newSignature.id,
+        name: newSignature.name,
+      })
 
     return res.status(200).send('Signed book!')
   } catch (error) {

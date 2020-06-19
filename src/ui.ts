@@ -8,39 +8,61 @@ let UIOpenTime
 const imageTexture = new Texture('images/UI_Guestbook.png')
 const scaleMultiplier = 0.7
 
-export let guestBookPage = 1
+var linesPerGuestBookPage = 12
 
-var linesPerGuestBookPage = 5
-
-let allSignatures = []
-
-export async function openUI() {
+export async function openUI(event: string) {
   UIOpenTime = +Date.now()
   background.visible = true
   background.isPointerBlocker = true
-  SignButton.visible = true
-  NextButton.visible = true
-  LastButton.visible = true
-  signaturesUI.visible = true
-  SignButton.isPointerBlocker = true
-  NextButton.isPointerBlocker = true
-  LastButton.isPointerBlocker = true
-  guestBookPage = 1
-  allSignatures = await getGuestBook()
-  displaySignatures()
+  let guestBookPage = 1
+
+  let allSignatures = await getGuestBook()
+  let totalPages = displaySignatures(allSignatures, guestBookPage)
+
+  SignButton.onClick = new OnClick(() => {
+    signGuestBook()
+    closeUI()
+    log('signed guestbook')
+  })
+
+  log('On page ', guestBookPage, ' of ', totalPages)
+
+  if (totalPages < 2) {
+    LastButton.visible = false
+    NextButton.visible = false
+  } else {
+    LastButton.visible = false
+    NextButton.visible = true
+  }
+
+  NextButton.onClick = new OnClick(async () => {
+    guestBookPage += 1
+
+    allSignatures = await getGuestBook()
+    displaySignatures(allSignatures, guestBookPage)
+    LastButton.visible = true
+    if (guestBookPage >= totalPages) {
+      NextButton.visible = false
+    }
+  })
+
+  LastButton.onClick = new OnClick(async () => {
+    guestBookPage -= 1
+    if (guestBookPage < 1) {
+      guestBookPage = 1
+    }
+    allSignatures = await getGuestBook()
+    displaySignatures(allSignatures, guestBookPage)
+    NextButton.visible = true
+    if (guestBookPage == 1) {
+      LastButton.visible = false
+    }
+  })
 }
 
 export function closeUI() {
-  SignButton.visible = false
-  NextButton.visible = false
-  LastButton.visible = false
-  signaturesUI.visible = false
-  SignButton.isPointerBlocker = false
-  NextButton.isPointerBlocker = false
-  LastButton.isPointerBlocker = false
   background.visible = false
   background.isPointerBlocker = false
-  // hide warnings
 }
 
 export const background = new UIImage(screenSpaceUI, imageTexture)
@@ -96,59 +118,35 @@ SignButton.sourceLeft = 76
 SignButton.sourceTop = 0
 SignButton.sourceWidth = 460
 SignButton.sourceHeight = 75
-SignButton.visible = false
-SignButton.isPointerBlocker = false
-SignButton.onClick = new OnClick(() => {
-  /////  do I add MANY 0s to the eth number????
-  signGuestBook()
-  closeUI()
-
-  log('signed guestbook')
-})
 
 export const NextButton = new UIImage(background, imageTexture)
-NextButton.name = 'LastButton'
+NextButton.name = 'NextButton'
 NextButton.width = 76 * scaleMultiplier
 NextButton.height = 76 * scaleMultiplier
 NextButton.hAlign = 'center'
 NextButton.vAlign = 'center'
 NextButton.positionY = 0
-NextButton.positionX = -300
-NextButton.sourceLeft = 0
+NextButton.positionX = 300
+NextButton.sourceLeft = 537
 NextButton.sourceTop = 0
 NextButton.sourceWidth = 75
 NextButton.sourceHeight = 75
-NextButton.visible = false
-NextButton.isPointerBlocker = false
-NextButton.onClick = new OnClick(() => {
-  guestBookPage += 1
-  getGuestBook()
-})
 
 export const LastButton = new UIImage(background, imageTexture)
-LastButton.name = 'NextButton'
+LastButton.name = 'LastButton'
 LastButton.width = 76 * scaleMultiplier
 LastButton.height = 76 * scaleMultiplier
 LastButton.hAlign = 'center'
 LastButton.vAlign = 'center'
 LastButton.positionY = 0
-LastButton.positionX = 300
-LastButton.sourceLeft = 537
+LastButton.positionX = -300
+LastButton.sourceLeft = 0
 LastButton.sourceTop = 0
 LastButton.sourceWidth = 75
 LastButton.sourceHeight = 75
-LastButton.visible = false
-LastButton.isPointerBlocker = false
-LastButton.onClick = new OnClick(() => {
-  guestBookPage -= 1
-  if (guestBookPage < 1) {
-    guestBookPage = 1
-  }
-  getGuestBook()
-})
 
 // arrange all signatures into pages
-function displaySignatures() {
+function displaySignatures(allSignatures: any[], guestBookPage: number) {
   let signaturePage = 0
   let signatureList = ['']
   for (let i = 0; i < allSignatures.length; i++) {
@@ -174,6 +172,8 @@ function displaySignatures() {
     ' :',
     signatureList[guestBookPage - 1]
   )
+
+  return signatureList.length
 }
 
 // Instance the input object

@@ -1,11 +1,13 @@
-import { getUserData } from '@decentraland/Identity'
+import { getUserData, UserData } from '@decentraland/Identity'
 
 // get player data
-const userData = executeTask(async () => {
+export let userData: UserData
+
+export async function setUserData() {
   const data = await getUserData()
   log(data.displayName)
-  return data
-})
+  userData = data
+}
 
 // external servers being used by the project - Please change these to your own if working on something else!
 export let fireBaseServer =
@@ -27,7 +29,7 @@ export async function getGuestBook() {
 // change data in scoreboard
 export async function signGuestBook() {
   if (!userData) {
-    await userData
+    await setUserData()
   }
   try {
     let url = fireBaseServer + 'add-signature'
