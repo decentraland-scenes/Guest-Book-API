@@ -10,15 +10,15 @@ export async function setUserData() {
 }
 
 // external servers being used by the project - Please change these to your own if working on something else!
-export let fireBaseServer =
+export const fireBaseServer =
   'https://us-central1-dcl-guestbook.cloudfunctions.net/app/'
 
 // get latest scoreboard data from server
 export async function getGuestBook() {
   try {
-    let url = fireBaseServer + 'get-signatures'
-    let response = await fetch(url)
-    let json = await response.json()
+    const url = fireBaseServer + 'get-signatures'
+    const response = await fetch(url)
+    const json = await response.json()
     log(json)
     return json
   } catch (e) {
@@ -32,16 +32,16 @@ export async function signGuestBook() {
     await setUserData()
   }
   try {
-    let url = fireBaseServer + 'add-signature'
-    let body = JSON.stringify({
+    const url = fireBaseServer + 'add-signature'
+    const body = JSON.stringify({
       id: (await userData).userId,
-      name: (await userData).displayName,
+      name: (await userData).displayName
     })
     log(body)
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: body,
+      body: body
     })
     return response.json()
   } catch (e) {

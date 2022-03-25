@@ -8,7 +8,7 @@ let UIOpenTime
 const imageTexture = new Texture('images/UI_Guestbook.png')
 const scaleMultiplier = 0.7
 
-var linesPerGuestBookPage = 12
+const linesPerGuestBookPage = 12
 
 export async function openUI(event: string) {
   UIOpenTime = +Date.now()
@@ -17,10 +17,10 @@ export async function openUI(event: string) {
   let guestBookPage = 1
 
   let allSignatures = await getGuestBook()
-  let totalPages = displaySignatures(allSignatures, guestBookPage)
+  const totalPages = displaySignatures(allSignatures, guestBookPage)
 
   SignButton.onClick = new OnClick(() => {
-    signGuestBook()
+    signGuestBook().catch((error) => log(error))
     closeUI()
     log('signed guestbook')
   })
@@ -54,7 +54,7 @@ export async function openUI(event: string) {
     allSignatures = await getGuestBook()
     displaySignatures(allSignatures, guestBookPage)
     NextButton.visible = true
-    if (guestBookPage == 1) {
+    if (guestBookPage === 1) {
       LastButton.visible = false
     }
   })
@@ -148,13 +148,13 @@ LastButton.sourceHeight = 75
 // arrange all signatures into pages
 function displaySignatures(allSignatures: any[], guestBookPage: number) {
   let signaturePage = 0
-  let signatureList = ['']
+  const signatureList = ['']
   for (let i = 0; i < allSignatures.length; i++) {
     signatureList[signaturePage] = signatureList[signaturePage].concat(
       allSignatures[i].name
     )
     signatureList[signaturePage] = signatureList[signaturePage].concat(' - ')
-    let lines = signatureList[signaturePage].split('\n')
+    const lines = signatureList[signaturePage].split('\n')
     if (lines[lines.length - 1].length > 25) {
       signatureList[signaturePage] = signatureList[signaturePage].concat('\n')
     }

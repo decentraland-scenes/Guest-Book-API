@@ -6,17 +6,21 @@ export type Props = {
 type ChangeTextType = { newText: string }
 
 export default class SignPost implements IScript<Props> {
-  init() { }
+  init() {}
 
   spawn(host: Entity, props: Props, channel: IChannel) {
     const sign = new Entity()
     sign.setParent(host)
 
-    sign.addComponent(new GLTFShape('6f54ea17-43bc-4b1e-a8c1-c9b24ff6e038/models/signpost/SignPost_Circle.glb'))
+    sign.addComponent(
+      new GLTFShape(
+        '6f54ea17-43bc-4b1e-a8c1-c9b24ff6e038/models/signpost/SignPost_Circle.glb'
+      )
+    )
 
-    let signText = new Entity()
+    const signText = new Entity()
     signText.setParent(host)
-    let text = new TextShape(props.text)
+    const text = new TextShape(props.text)
     text.fontSize = props.fontSize
     text.color = Color3.Black()
 
@@ -37,11 +41,11 @@ export default class SignPost implements IScript<Props> {
       })
     )
 
-    channel.handleAction<ChangeTextType>('changeText', action => {
+    channel.handleAction<ChangeTextType>('changeText', (action) => {
       text.value = action.values.newText
     })
 
-    channel.request<string>('getText', signText => (text.value = signText))
+    channel.request<string>('getText', (signText) => (text.value = signText))
     channel.reply<string>('getText', () => text.value)
   }
 }
